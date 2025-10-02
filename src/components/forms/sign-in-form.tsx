@@ -8,31 +8,29 @@ interface Credentials {
   password: string
 }
 
-function SignUpForm (): React.ReactNode {
+function SignInForm (): React.ReactNode {
   const [credentials, setCredentials] = useState<Credentials>({ email: '', password: '' })
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     console.log('form submitted', credentials)
 
-    void authClient.signUp.email({
-      email: credentials.email, // user email address
-      password: credentials.password, // user password -> min 8 characters by default
-      name: credentials.email, // user display name
-      image: '', // User image URL (optional)
-      callbackURL: '/dashboard' // A URL to redirect to after the user verifies their email (optional)
+    void authClient.signIn.email({
+      email: credentials.email,
+      password: credentials.password,
+      callbackURL: '/dashboard' // URL de redirection après connexion réussie
     }, {
       onRequest: (ctx) => {
-        console.log('sign up request', ctx)
-        // show loading
+        console.log('sign in request', ctx)
+        // afficher le chargement
       },
       onSuccess: (ctx) => {
-        console.log('sign up success', ctx)
-        // redirect to the dashboard or sign in page
+        console.log('sign in success', ctx)
+        // rediriger vers le dashboard
       },
       onError: (ctx) => {
-        console.log('sign up error', ctx)
-        // display the error message
+        console.log('sign in error', ctx)
+        // afficher le message d'erreur
         alert(ctx.error.message)
       }
     })
@@ -40,7 +38,7 @@ function SignUpForm (): React.ReactNode {
 
   return (
     <div>
-      <h1>Sign Up</h1>
+      <h1>Sign In</h1>
       <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         <InputField
           label='Email:'
@@ -56,10 +54,10 @@ function SignUpForm (): React.ReactNode {
           value={credentials.password}
           onChangeText={(text) => setCredentials({ ...credentials, password: text })}
         />
-        <Button type='submit'>Sign Up</Button>
+        <Button type='submit'>Sign In</Button>
       </form>
     </div>
   )
 }
 
-export default SignUpForm
+export default SignInForm

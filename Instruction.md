@@ -146,6 +146,35 @@ src/
 
 6. **Internationalisation** : Structure prête pour ajouter i18n si nécessaire
 
+#### 7. Correction des erreurs TypeScript/ESLint - Formulaire d'inscription
+- **Problème détecté** : Erreur `@typescript-eslint/no-misused-promises` dans `sign-up-form.tsx`
+  - Une fonction async retournant `Promise<void>` était passée à l'attribut `onSubmit` qui attend `void`
+- **Solution appliquée** :
+  - Modification de la signature de `handleSubmit` : retrait de `async` et `Promise<void>`, retour `void`
+  - Utilisation du mot-clé `void` devant l'appel à `authClient.signUp.email()` pour ignorer explicitement la Promise
+  - Les callbacks `onSuccess` et `onError` continuent de gérer les résultats de manière appropriée
+- **Principes respectés** : Clean Code (gestion appropriée des Promises dans les event handlers)
+
+#### 8. Création du formulaire de connexion (Sign In Form)
+- **Fichier créé** : `src/components/forms/sign-in-form.tsx`
+- **Structure** : Similaire au formulaire d'inscription pour maintenir la cohérence
+- **Composants utilisés** :
+  - `InputField` : Pour les champs email et password
+  - `Button` : Pour le bouton de soumission
+  - `authClient` : Pour l'authentification via `signIn.email()`
+- **Fonctionnalités** :
+  - Gestion de l'état local avec `useState<Credentials>`
+  - Soumission du formulaire avec `handleSubmit` (retourne `void`)
+  - Utilisation de `void authClient.signIn.email()` pour respecter les règles ESLint
+  - Callbacks pour gérer les états : `onRequest`, `onSuccess`, `onError`
+  - Redirection vers `/dashboard` après connexion réussie
+  - Affichage des messages d'erreur via `alert()`
+- **Principes appliqués** :
+  - **SOLID** : Single Responsibility (un composant = une responsabilité)
+  - **Clean Code** : Code lisible, noms explicites, gestion appropriée des Promises
+  - **DRY** : Réutilisation des composants existants (`InputField`, `Button`)
+- **Style** : Utilisation de Tailwind CSS (`flex flex-col gap-4`)
+
 ## Commandes utiles
 
 ```bash
