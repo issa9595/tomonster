@@ -1,16 +1,23 @@
-import Button from '@/components/button'
+'use client'
+
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import HeroSection from '@/components/sections/HeroSection'
+import BenefitsSection from '@/components/sections/BenefitsSection'
+import MonstersSection from '@/components/sections/MonstersSection'
+import ActionsSection from '@/components/sections/ActionsSection'
+import NewsletterSection from '@/components/sections/NewsletterSection'
 
 export default function Home (): React.ReactNode {
   return (
-    <div className='font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20'>
-      <main className='flex flex-col gap-[32px] row-start-2 items-center sm:items-start' />
-      <h1>Hello There</h1>
-      <Button size='sm'>Click me</Button>
-      <Button size='md' disabled>Click me</Button>
-      <Button size='lg'>Click me</Button>
-      <Button variant='ghost'>Click me</Button>
-      <Button variant='underline'>Click me</Button>
-      <Button variant='outline'>Click me</Button>
+    <div className='min-h-screen bg-gradient-to-b from-white to-lavender-50'>
+      <Header onCreateCharacter={() => { console.log('Créer un personnage') }} />
+      <HeroSection />
+      <BenefitsSection />
+      <MonstersSection />
+      <ActionsSection />
+      <NewsletterSection />
+      <Footer />
     </div>
   )
 }
