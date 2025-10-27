@@ -832,5 +832,5 @@ Créer un composant permettant d'effectuer des actions sur le monstre : Nourrir,
   - **Type Safety** : Gestion explicite des types nullable
   - **Clean Code** : Code plus lisible et prévisible
   - **Standards de qualité** : Conformité aux règles ESLint strictes
-- **Résultat** : L'erreur TypeScript est résolue et le code respecte les standards de qualité du projet
+- **Résultat** : L'erreur TypeScript est résolue et le code respecte les standards de qualité du projet.
 
