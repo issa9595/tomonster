@@ -6,12 +6,13 @@ function getSize (size: 'sm' | 'md' | 'lg' | 'xl'): string {
     case 'xl': return 'px-8 py-4 text-xl'
   }
 }
+
 function getVariant (variant: 'primary' | 'ghost' | 'underline' | 'outline', disabled: boolean): string {
   switch (variant) {
-    case 'primary': return disabled ? 'bg-lavender-200 text-lavender-400' : 'bg-lavender-500 hover:bg-lavender-700 text-white'
-    case 'ghost': return disabled ? 'bg-transparent text-lavender-200' : 'bg-transparent text-lavender-500 hover:bg-lavender-100/10'
-    case 'underline': return disabled ? 'underline text-lavender-200' : 'underline hover:no-underline underline-offset-6'
-    case 'outline': return disabled ? 'border border-lavender-200 text-lavender-400' : 'border border-lavender-500 text-lavender-500 hover:bg-lavender-100/10'
+    case 'primary': return disabled ? 'bg-moccaccino-200 text-moccaccino-400' : 'bg-moccaccino-500 hover:bg-moccaccino-700 text-white'
+    case 'ghost': return disabled ? 'bg-transparent text-moccaccino-200' : 'bg-transparent text-moccaccino-500 hover:bg-moccaccino-100/10'
+    case 'underline': return disabled ? 'underline text-moccaccino-200' : 'underline hover:no-underline underline-offset-6'
+    case 'outline': return disabled ? 'border border-moccaccino-200 text-moccaccino-400' : 'border border-moccaccino-500 text-moccaccino-500 hover:bg-moccaccino-100/10'
   }
 }
 
@@ -21,7 +22,7 @@ function Button ({
   size = 'md',
   variant = 'primary',
   disabled = false,
-  type = 'button'
+  type
 }: {
   children: React.ReactNode
   onClick?: () => void
@@ -29,7 +30,6 @@ function Button ({
   variant?: 'primary' | 'ghost' | 'underline' | 'outline'
   disabled?: boolean
   type?: 'button' | 'submit' | 'reset'
-
 }): React.ReactNode {
   return (
     <button

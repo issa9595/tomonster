@@ -1,72 +1,62 @@
 'use client'
 
-import Button from './button'
+import Image from 'next/image'
+import Button from '@/components/button'
+import type { NavigationItem } from '@/types/components'
 
-interface HeaderProps {
-  onCreateCharacter?: () => void
-}
+// Single Responsibility: Header handles only navigation and branding
+export default function Header (): React.ReactNode {
+  const navigationItems: NavigationItem[] = [
+    { href: '#hero', label: 'Accueil' },
+    { href: '#benefits', label: 'Avantages' },
+    { href: '#monsters', label: 'Créatures' },
+    { href: '#actions', label: 'Actions' },
+    { href: '#newsletter', label: 'Newsletter' }
+  ]
 
-export default function Header ({ onCreateCharacter }: HeaderProps): React.ReactNode {
-  const scrollToSection = (sectionId: string): void => {
-    const element = document.getElementById(sectionId)
-    if (element != null) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
+  const handleSignin = (): void => {
+    window.location.href = '/sign-in'
   }
 
   return (
-    <header className='fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-lavender-200 shadow-sm'>
-      <nav className='container mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex items-center justify-between h-16'>
+    <header className='bg-white shadow-sm sticky top-0 z-50'>
+      <nav className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='flex justify-between items-center h-16'>
           {/* Logo */}
-          <div className='flex items-center'>
-            <div className='text-2xl font-bold text-lavender-600 flex items-center gap-2'>
-              <span className='text-3xl'>🐾</span>
-              <span>ToMonster</span>
+          <div className='flex-shrink-0'>
+            <div className='flex items-center space-x-2'>
+              <Image
+                src='/logo_comp.webp'
+                alt='Tamagotcho Logo'
+                width={40}
+                height={40}
+                className='w-10 h-10'
+                priority
+              />
+              <span className='text-2xl font-bold text-moccaccino-600'>
+                Tamagotcho
+              </span>
             </div>
           </div>
 
-          {/* Navigation Desktop */}
-          <div className='hidden md:flex items-center gap-8'>
-            <button
-              onClick={() => { scrollToSection('hero') }}
-              className='text-gray-700 hover:text-lavender-600 transition-colors duration-200 font-medium'
-            >
-              Accueil
-            </button>
-            <button
-              onClick={() => { scrollToSection('benefits') }}
-              className='text-gray-700 hover:text-lavender-600 transition-colors duration-200 font-medium'
-            >
-              Avantages
-            </button>
-            <button
-              onClick={() => { scrollToSection('monsters') }}
-              className='text-gray-700 hover:text-lavender-600 transition-colors duration-200 font-medium'
-            >
-              Monstres
-            </button>
-            <button
-              onClick={() => { scrollToSection('actions') }}
-              className='text-gray-700 hover:text-lavender-600 transition-colors duration-200 font-medium'
-            >
-              Actions
-            </button>
-            <button
-              onClick={() => { scrollToSection('newsletter') }}
-              className='text-gray-700 hover:text-lavender-600 transition-colors duration-200 font-medium'
-            >
-              Newsletter
-            </button>
+          {/* Navigation Menu */}
+          <div className='hidden md:block'>
+            <div className='ml-10 flex items-baseline space-x-8'>
+              {navigationItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className='text-gray-700 hover:text-moccaccino-600 px-3 py-2 text-sm font-medium transition-colors'
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* CTA Button */}
-          <div className='flex items-center gap-4'>
-            <Button
-              size='md'
-              variant='primary'
-              onClick={onCreateCharacter}
-            >
+          <div className='flex items-center'>
+            <Button variant='primary' size='md' onClick={handleSignin}>
               Créer mon monstre
             </Button>
           </div>

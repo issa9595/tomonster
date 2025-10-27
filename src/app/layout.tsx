@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { DynaPuff, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import { ToastContainer } from 'react-toastify'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const dynaPuff = DynaPuff({
+  variable: '--font-dynapuff',
   subsets: ['latin']
 })
 
@@ -13,8 +14,18 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'ToMonster - Prenez soin de votre petit monstre virtuel',
-  description: 'Découvrez l\'univers magique de ToMonster où vous prenez soin de votre compagnon virtuel. Nourrissez-le, jouez avec lui et regardez-le grandir !'
+  appleWebApp: {
+    title: 'Tamagotcho'
+  },
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon1.png', type: 'image/png' },
+      { url: '/icon0.svg', type: 'image/svg+xml' }
+    ],
+    apple: [{ url: '/apple-icon.png' }]
+  }
 }
 
 export default function RootLayout ({
@@ -25,9 +36,10 @@ export default function RootLayout ({
   return (
     <html lang='fr'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${dynaPuff.variable} ${geistMono.variable} antialiased font-sans`}
       >
         {children}
+        <ToastContainer />
       </body>
     </html>
   )
