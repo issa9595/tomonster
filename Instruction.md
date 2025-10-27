@@ -4,6 +4,35 @@
 
 ### Date : 27 octobre 2025 - Refactorisation SOLID et Préparation Production
 
+#### Correction urgente : Problème de casse des fichiers (Case Sensitivity)
+
+**Problème rencontré sur Vercel** :
+```
+Module not found: Can't resolve '@/components/header'
+```
+
+**Cause** :
+- Windows est **case-insensitive** (Header.tsx = header.tsx)
+- Linux (Vercel) est **case-sensitive** (Header.tsx ≠ header.tsx)
+- Git trackait encore les anciens fichiers avec majuscules (`Header.tsx`, `Footer.tsx`)
+- Les imports utilisaient des minuscules (`header`, `footer`)
+- → Fonctionnait sur Windows mais échouait sur Vercel
+
+**Solution appliquée** :
+```bash
+git rm --cached src/components/Footer.tsx src/components/Header.tsx
+git add src/components/footer.tsx src/components/header.tsx
+git commit -m "fix: Correction casse des fichiers Header et Footer pour compatibilité Linux/Vercel"
+git push origin master
+```
+
+**Résultat** :
+- ✅ Fichiers renommés correctement dans Git
+- ✅ Imports cohérents avec les noms de fichiers réels
+- ✅ Build Vercel devrait maintenant réussir
+
+---
+
 #### Objectif de la session
 Préparer le code pour une mise en ligne en phase de test en appliquant les principes SOLID, Clean Code et Clean Architecture sur l'ensemble de l'application.
 
