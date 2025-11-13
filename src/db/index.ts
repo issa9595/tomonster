@@ -15,12 +15,6 @@ const client = new MongoClient(uri, {
 
 async function connectMongooseToDatabase (): Promise<void> {
   try {
-    // Vérifier si Mongoose est déjà connecté
-    if (mongoose.connection.readyState === 1) {
-      console.log('Mongoose already connected to MongoDB database')
-      return
-    }
-
     await mongoose.connect(uri)
     console.log('Mongoose connected to MongoDB database')
   } catch (error) {
@@ -30,12 +24,6 @@ async function connectMongooseToDatabase (): Promise<void> {
 
 async function connectToDatabase (): Promise<void> {
   try {
-    // Vérifier si le client est déjà connecté
-    if (client.db !== undefined) {
-      console.log('MongoDB client already connected')
-      return
-    }
-
     await client.connect()
     console.log('Connected to MongoDB database')
   } catch (error) {
@@ -43,4 +31,23 @@ async function connectToDatabase (): Promise<void> {
   }
 }
 
+// Promise globale pour réutiliser la connexion
+let clientPromise: Promise<MongoClient>
+
+if (process.env.NODE_ENV === 'development') {
+  // En dev, utiliser une variable globale pour préserver la connexion entre HMR
+  const globalWithMongo = global as typeof globalThis & {
+    _mongoClientPromise?: Promise<MongoClient>
+  }
+
+  if (globalWithMongo._mongoClientPromise == null) {
+    globalWithMongo._mongoClientPromise = client.connect()
+  }
+  clientPromise = globalWithMongo._mongoClientPromise
+} else {
+  // En production, créer une nouvelle connexion
+  clientPromise = client.connect()
+}
+
 export { client, connectToDatabase, connectMongooseToDatabase }
+export default clientPromise

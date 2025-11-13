@@ -1,63 +1,46 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Button from '../button'
 import InputField from '../input'
-import MonsterPreview from './monster-preview'
-import MonsterStateSelector from './monster-state-selector'
+import { PixelMonster } from '../monsters'
 import {
   createInitialFormState,
-  validateCreateMonsterForm
+  validateCreateMonsterForm,
+  type CreateMonsterFormDraft,
+  type CreateMonsterFormErrors
 } from './create-monster-form.validation'
 import { generateRandomTraits } from '../../services/monsters/monster-generator'
-import { DEFAULT_MONSTER_STATE } from '@/types/monster'
+import {
+  DEFAULT_MONSTER_STATE,
+  MONSTER_STATES,
+  type MonsterTraits,
+  type MonsterState
+} from '@/types/monster'
 import type { CreateMonsterFormProps } from '@/types/forms/create-monster-form'
-import { useMonsterFormState } from '@/hooks/use-monster-form-state'
 
-/**
- * Formulaire de création d'un nouveau monstre
- *
- * Responsabilités :
- * - Permettre à l'utilisateur de nommer son monstre
- * - Générer aléatoirement les traits visuels du monstre
- * - Prévisualiser le monstre dans différents états d'humeur
- * - Valider les données avant soumission
- * - Gérer l'annulation et la réinitialisation
- *
- * @example
- * <CreateMonsterForm
- *   onSubmit={(values) => createMonster(values)}
- *   onCancel={() => closeModal()}
- * />
- */
+const MONSTER_STATE_LABELS: Record<MonsterState, string> = {
+  happy: 'Heureux 😊',
+  sad: 'Triste 😢',
+  angry: 'Fâché 😡',
+  hungry: 'Affamé 😋',
+  sleepy: 'Somnolent 😴'
+}
+
 function CreateMonsterForm ({ onSubmit, onCancel }: CreateMonsterFormProps): React.ReactNode {
-  // Gestion centralisée de l'état du formulaire
-  const {
-    formState,
-    errors,
-    traits,
-    previewState,
-    setFormState,
-    setErrors,
-    setTraits,
-    setPreviewState,
-    resetForm
-  } = useMonsterFormState(createInitialFormState())
+  const [formState, setFormState] = useState<CreateMonsterFormDraft>(() => createInitialFormState())
+  const [errors, setErrors] = useState<CreateMonsterFormErrors>({})
+  const [traits, setTraits] = useState<MonsterTraits | null>(null)
+  const [previewState, setPreviewState] = useState<MonsterState>(DEFAULT_MONSTER_STATE)
 
-  // Génération initiale des traits au montage du composant
   useEffect(() => {
     if (traits === null) {
       setTraits(generateRandomTraits())
     }
-  }, [traits, setTraits])
+  }, [traits])
 
-  // Désactive le bouton de soumission s'il y a des erreurs ou pas de traits
   const hasActiveErrors = traits === null || Object.values(errors).some((value) => Boolean(value))
 
-  /**
-   * Génère de nouveaux traits aléatoires pour le monstre
-   * Réinitialise l'état de prévisualisation et efface les erreurs liées au design
-   */
   const handleGenerateMonster = (): void => {
     const nextTraits = generateRandomTraits()
     setTraits(nextTraits)
@@ -65,12 +48,6 @@ function CreateMonsterForm ({ onSubmit, onCancel }: CreateMonsterFormProps): Rea
     setErrors((previous) => ({ ...previous, design: undefined }))
   }
 
-  /**
-   * Gère la soumission du formulaire
-   * Valide les données et appelle le callback parent si valide
-   *
-   * @param event - Événement de soumission du formulaire
-   */
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
@@ -82,21 +59,22 @@ function CreateMonsterForm ({ onSubmit, onCancel }: CreateMonsterFormProps): Rea
     }
 
     onSubmit(validationResult.values)
-    resetForm()
+    setFormState(createInitialFormState())
+    setTraits(null)
+    setPreviewState(DEFAULT_MONSTER_STATE)
+    setErrors({})
   }
 
-  /**
-   * Gère l'annulation du formulaire
-   * Réinitialise tous les champs et appelle le callback parent
-   */
   const handleCancel = (): void => {
-    resetForm()
+    setFormState(createInitialFormState())
+    setTraits(null)
+    setPreviewState(DEFAULT_MONSTER_STATE)
+    setErrors({})
     onCancel()
   }
 
   return (
     <form className='space-y-6' onSubmit={handleSubmit}>
-      {/* Champ de saisie du nom */}
       <InputField
         label='Nom'
         name='name'
@@ -110,7 +88,6 @@ function CreateMonsterForm ({ onSubmit, onCancel }: CreateMonsterFormProps): Rea
         error={errors.name}
       />
 
-      {/* Section de prévisualisation et génération du monstre */}
       <section className='space-y-4 rounded-3xl border border-moccaccino-100 bg-white/60 p-4 shadow-inner'>
         <div className='flex items-center justify-between gap-3'>
           <h3 className='text-lg font-semibold text-gray-800'>Votre créature</h3>
@@ -119,18 +96,26 @@ function CreateMonsterForm ({ onSubmit, onCancel }: CreateMonsterFormProps): Rea
           </Button>
         </div>
 
-        {/* Prévisualisation du monstre */}
-        {traits !== null && (
-          <MonsterPreview traits={traits} state={previewState} level={1} />
-        )}
+        <div className='flex items-center justify-center rounded-3xl bg-slate-50/70 p-4'>
+          {traits !== null && (
+            <PixelMonster traits={traits} state={previewState} level={1} />
+          )}
+        </div>
 
-        {/* Sélecteur d'humeur pour la prévisualisation */}
-        <MonsterStateSelector
-          selectedState={previewState}
-          onStateChange={setPreviewState}
-        />
+        <div className='flex flex-wrap items-center justify-center gap-2'>
+          {MONSTER_STATES.map((state) => (
+            <Button
+              key={state}
+              type='button'
+              size='sm'
+              variant={state === previewState ? 'primary' : 'ghost'}
+              onClick={() => setPreviewState(state)}
+            >
+              {MONSTER_STATE_LABELS[state]}
+            </Button>
+          ))}
+        </div>
 
-        {/* Affichage des erreurs de design */}
         {errors.design !== undefined && (
           <span className='text-sm text-red-500'>
             {errors.design}
@@ -138,7 +123,6 @@ function CreateMonsterForm ({ onSubmit, onCancel }: CreateMonsterFormProps): Rea
         )}
       </section>
 
-      {/* Boutons d'action */}
       <div className='flex justify-end gap-3'>
         <Button onClick={handleCancel} type='button' variant='ghost'>
           Annuler

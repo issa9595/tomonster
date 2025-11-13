@@ -1,29 +1,32 @@
 import AuthFormContent from '@/components/forms/auth-form-content'
 import { connectToDatabase } from '@/db'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 /**
- * Page de connexion et d'inscription
+ * Page de connexion
  *
- * Responsabilités :
- * - Établir la connexion à la base de données
- * - Afficher le formulaire d'authentification (connexion/inscription)
- * - Créer une ambiance visuelle accueillante et ludique
- * - Rediriger les utilisateurs authentifiés vers le dashboard
+ * Si l'utilisateur est déjà connecté, il est redirigé vers /app
  *
- * Design :
- * - Interface centrée avec animations de fond
- * - Formulaire à onglets (Sign In / Sign Up)
- * - Gradient coloré et effets de transparence
- *
- * @returns Page de connexion/inscription complète
+ * @returns {Promise<React.ReactNode>} Page de connexion ou redirection
  */
 async function SignInPage (): Promise<React.ReactNode> {
-  // Initialise la connexion à la base de données
   await connectToDatabase()
+
+  // Vérifier si l'utilisateur est déjà connecté
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  // Si connecté, rediriger vers l'application
+  if (session !== null && session !== undefined) {
+    redirect('/app')
+  }
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-moccaccino-50 via-fuchsia-blue-50 to-lochinvar-50 flex items-center justify-center p-4 relative overflow-hidden'>
-      {/* Monstres animés en arrière-plan */}
+      {/* Animated floating monsters */}
       <div className='absolute inset-0 pointer-events-none overflow-hidden'>
         <div className='absolute top-20 left-10 text-6xl animate-bounce'>🥺</div>
         <div className='absolute top-32 right-20 text-5xl animate-pulse'>👾</div>
@@ -33,13 +36,13 @@ async function SignInPage (): Promise<React.ReactNode> {
         <div className='absolute top-1/3 right-5 text-4xl animate-pulse' style={{ animationDelay: '1.5s' }}>🌟</div>
       </div>
 
-      {/* Carte principale du formulaire */}
+      {/* Main card container */}
       <div className='w-full max-w-md relative z-10'>
         <div className='bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 p-8 relative overflow-hidden'>
-          {/* Barre décorative en haut */}
+          {/* Decorative gradient overlay */}
           <div className='absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-moccaccino-400 via-fuchsia-blue-400 to-lochinvar-400' />
 
-          {/* Message de bienvenue */}
+          {/* Welcome message */}
           <div className='text-center mb-8'>
             <div className='text-5xl mb-4'>🎮</div>
             <h1 className='text-3xl font-bold bg-gradient-to-r from-moccaccino-600 to-fuchsia-blue-600 bg-clip-text text-transparent'>
@@ -53,7 +56,7 @@ async function SignInPage (): Promise<React.ReactNode> {
           <AuthFormContent />
         </div>
 
-        {/* Citation amusante sous la carte */}
+        {/* Fun quote below the card */}
         <div className='text-center mt-6 text-gray-600 text-sm'>
           <span className='italic'>"Un monstre par jour éloigne l'ennui pour toujours !"</span> 🎭
         </div>

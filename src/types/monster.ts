@@ -29,9 +29,11 @@ export interface DBMonster {
   _id: string
   name: string
   level: number
+  xp: number
+  maxXp: number
   traits: string // JSON serialized MonsterTraits
   state: MonsterState
   ownerId: string
-  createdAt: Date | string // Peut être Date ou string selon la source
-  updatedAt: Date | string // Peut être Date ou string selon la source
+  createdAt: Date
+  updatedAt: Date
 }

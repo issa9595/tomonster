@@ -863,3 +863,18 @@ Créer un composant permettant d'effectuer des actions sur le monstre : Nourrir,
   - **Standards de qualité** : Conformité aux règles ESLint strictes
 - **Résultat** : L'erreur TypeScript est résolue et le code respecte les standards de qualité du projet.
 
+#### 21. Correction de l'erreur MongoDB - Namespace invalide dans l'auto-updater
+- **Problème détecté** : Erreur `Invalid namespace specified: tomonster/.monsters` lors de l'exécution de l'auto-updater des monstres
+- **Contexte** : L'erreur se produisait dans le composant `MonstersAutoUpdater` lors de l'appel à l'API `/api/cron/update-monsters`
+- **Cause identifiée** : Bien que la correction ait été documentée dans l'Instruction.md (point #10), elle n'avait pas été appliquée dans le fichier `src/db/index.ts`. L'URI MongoDB était toujours mal formée, manquant le caractère `?` avant les paramètres de connexion
+- **Impact** : Le nom de la base de données était concaténé avec les paramètres, créant un namespace invalide comme "tomonsterretryWrites=true" au lieu de "tomonster"
+- **Solution appliquée** :
+  - Ajout du caractère `?` manquant à la ligne 4 de `src/db/index.ts`
+  - L'URI correcte est : `mongodb+srv://user:pass@host/database?params&appName=app`
+  - Cette correction sépare proprement le nom de la base de données des paramètres de query string
+- **Fichier modifié** : `src/db/index.ts` (ligne 4)
+- **Principes appliqués** :
+  - **Clean Code** : URI correctement formatée selon les standards MongoDB
+  - **Robustesse** : Validation correcte du namespace par MongoDB
+- **Résultat** : L'auto-updater fonctionne correctement et peut mettre à jour les états des monstres sans erreur de namespace
+
