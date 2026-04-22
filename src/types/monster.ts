@@ -34,6 +34,13 @@ export interface DBMonster {
   traits: string // JSON serialized MonsterTraits
   state: MonsterState
   ownerId: string
+  isPublic: boolean
+  equippedAccessories: {
+    hat: string | null
+    glasses: string | null
+    shoes: string | null
+  }
+  equippedBackground: string | null
   createdAt: Date
   updatedAt: Date
 }
