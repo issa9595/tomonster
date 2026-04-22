@@ -11,6 +11,7 @@ import { Types } from 'mongoose'
 import { MonsterAction } from '@/hooks/monsters'
 import { addKoins } from '@/actions/wallet.actions'
 import { REWARDS } from '@/config/rewards'
+import { progressQuest } from '@/actions/quests.actions'
 
 /**
  * Crée un nouveau monstre pour l'utilisateur authentifié
@@ -267,6 +268,9 @@ export async function doActionOnMonster (id: string, action: MonsterAction): Pro
         } catch {
           koinsEarned = 0
         }
+
+        // Progression des quêtes
+        void progressQuest(user.id, action as 'feed' | 'hug' | 'comfort' | 'wake')
       }
     }
 
