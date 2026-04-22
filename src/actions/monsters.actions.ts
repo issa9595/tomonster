@@ -9,6 +9,8 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { Types } from 'mongoose'
 import { MonsterAction } from '@/hooks/monsters'
+import { addKoins } from '@/actions/wallet.actions'
+import { REWARDS } from '@/config/rewards'
 
 /**
  * Crée un nouveau monstre pour l'utilisateur authentifié
@@ -194,7 +196,7 @@ const actionsStatesMap: Record<Exclude<MonsterAction, null>, string> = {
   wake: 'sleepy'
 }
 
-export async function doActionOnMonster (id: string, action: MonsterAction): Promise<void> {
+export async function doActionOnMonster (id: string, action: MonsterAction): Promise<{ koinsEarned: number }> {
   try {
     // Connexion à la base de données
     await connectMongooseToDatabase()
@@ -229,6 +231,8 @@ export async function doActionOnMonster (id: string, action: MonsterAction): Pro
       monster.maxXp = monster.level * 100
     }
 
+    let koinsEarned = 0
+
     // Mise à jour de l'état du monstre en fonction de l'action
     if (action !== null && action !== undefined && action in actionsStatesMap) {
       if (monster.state === actionsStatesMap[action]) {
@@ -255,9 +259,20 @@ export async function doActionOnMonster (id: string, action: MonsterAction): Pro
         monster.markModified('maxXp')
         monster.markModified('level')
         await monster.save()
+
+        // Récompense en Koins pour action correcte
+        koinsEarned = REWARDS[action] ?? 5
+        try {
+          await addKoins(koinsEarned)
+        } catch {
+          koinsEarned = 0
+        }
       }
     }
+
+    return { koinsEarned }
   } catch (error) {
     console.error('Error updating monster state:', error)
+    return { koinsEarned: 0 }
   }
 }
