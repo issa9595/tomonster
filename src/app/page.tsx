@@ -7,6 +7,9 @@ import ActionsSection from '@/components/actions-section'
 import NewsletterSection from '@/components/newsletter-section'
 import Footer from '@/components/footer'
 import { Metadata } from 'next'
+import { auth } from '@/lib/auth'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 export const metadata: Readonly<Metadata> = {
   title: 'Tamagotcho - Adopte et prends soin de ton compagnon virtuel',
@@ -23,7 +26,12 @@ export const metadata: Readonly<Metadata> = {
 }
 
 // Single Responsibility: Home page orchestrates the layout of sections
-export default function Home (): React.ReactNode {
+export default async function Home (): Promise<React.ReactNode> {
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (session !== null && session !== undefined) {
+    redirect('/app')
+  }
+
   return (
     <div className='font-sans'>
       <HeaderWrapper />

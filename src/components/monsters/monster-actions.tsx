@@ -2,6 +2,7 @@
 
 import { doActionOnMonster } from '@/actions/monsters.actions'
 import { useMonsterAction, type MonsterAction } from '@/hooks/monsters'
+import { toast } from 'react-toastify'
 
 /**
  * Props pour le composant MonsterActions
@@ -140,7 +141,15 @@ export function MonsterActions ({ onAction, monsterId }: MonsterActionsProps): R
    */
   const handleAction = (action: MonsterAction): void => {
     triggerAction(action, onAction)
-    void doActionOnMonster(monsterId, action)
+    void doActionOnMonster(monsterId, action).then(({ koinsEarned }) => {
+      if (koinsEarned > 0) {
+        toast.success(`+${koinsEarned} Koins ! 🪙`, {
+          position: 'top-center',
+          autoClose: 2000,
+          style: { background: '#7c3aed', color: 'white' }
+        })
+      }
+    })
   }
 
   return (

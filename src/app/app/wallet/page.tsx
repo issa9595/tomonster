@@ -1,5 +1,16 @@
 import { getWallet } from '@/actions/wallet.actions'
 import WalletClient from '@/components/wallet/wallet-client'
+import { getInventory } from '@/actions/accessories.actions'
+import dynamic from 'next/dynamic'
+
+const AccessoriesShopSection = dynamic(
+  () => import('@/components/shop/accessories-shop-section'),
+  { loading: () => <div className='animate-pulse bg-gray-100 rounded-3xl h-64' /> }
+)
+const BackgroundsShopSection = dynamic(
+  () => import('@/components/shop/backgrounds-shop-section'),
+  { loading: () => <div className='animate-pulse bg-gray-100 rounded-3xl h-48' /> }
+)
 
 /**
  * Page dédiée au Wallet (Portefeuille de Koins)
@@ -38,5 +49,15 @@ export default async function WalletPage (): Promise<React.ReactNode> {
     )
   }
 
-  return <WalletClient initialWallet={wallet} />
+  const inventory = await getInventory()
+
+  return (
+    <div>
+      <WalletClient initialWallet={wallet} />
+      <div className='max-w-4xl mx-auto px-4 pb-8 flex flex-col gap-6'>
+        <AccessoriesShopSection ownedAccessories={inventory?.accessories ?? []} />
+        <BackgroundsShopSection ownedBackgrounds={inventory?.backgrounds ?? []} />
+      </div>
+    </div>
+  )
 }

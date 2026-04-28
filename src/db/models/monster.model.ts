@@ -36,9 +36,25 @@ const monsterSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user',
     required: true
+  },
+  isPublic: {
+    type: Boolean,
+    default: false
+  },
+  equippedAccessories: {
+    hat: { type: String, default: null },
+    glasses: { type: String, default: null },
+    shoes: { type: String, default: null }
+  },
+  equippedBackground: {
+    type: String,
+    default: null
   }
 }, {
   timestamps: true
 })
+
+monsterSchema.index({ ownerId: 1 })
+monsterSchema.index({ isPublic: 1, createdAt: -1 })
 
 export default mongoose.models.Monster ?? mongoose.model('Monster', monsterSchema)
