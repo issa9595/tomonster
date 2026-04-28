@@ -20,10 +20,6 @@ export async function POST (request: Request): Promise<Response> {
     return new Response('Product not found', { status: 404 })
   }
 
-  if (!stripe) {
-    return new Response('Stripe not configured', { status: 503 })
-  }
-
   const checkoutSession = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: [

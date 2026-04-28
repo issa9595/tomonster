@@ -9,10 +9,6 @@ export const runtime = 'nodejs'
 export async function POST (req: Request): Promise<Response> {
   const sig = (await headers()).get('stripe-signature')
   const payload = await req.text() // corps brut requis
-  if (!stripe) {
-    return new Response('Stripe not configured', { status: 503 })
-  }
-
   let event: Stripe.Event
   try {
     event = stripe.webhooks.constructEvent(payload, sig as string, process.env.STRIPE_WEBHOOK_SECRET as string)
