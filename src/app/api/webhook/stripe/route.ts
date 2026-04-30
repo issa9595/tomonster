@@ -3,6 +3,7 @@ import { stripe } from '@/lib/stripe'
 import Stripe from 'stripe'
 import Wallet from '@/db/models/wallet.model'
 import { pricingTable } from '@/config/pricing'
+import { connectMongooseToDatabase } from '@/db'
 
 export const runtime = 'nodejs'
 
@@ -21,6 +22,7 @@ export async function POST (req: Request): Promise<Response> {
       console.log('Checkout session completed')
       console.log(event.data.object)
 
+      await connectMongooseToDatabase()
       const wallet = await Wallet.findOne({ ownerId: event?.data?.object?.metadata?.userId })
       if (wallet !== null && wallet !== undefined) {
         const entry = Object.entries(pricingTable).find(([_, pkg]) => pkg.productId === event?.data?.object?.metadata?.productId)
