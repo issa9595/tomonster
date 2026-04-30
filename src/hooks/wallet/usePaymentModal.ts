@@ -39,7 +39,7 @@ export function usePaymentModal (): UsePaymentModalReturn {
    */
   const closeModal = (): void => {
     setShowModal(false)
-    router.replace('/wallet')
+    router.replace('/app/wallet')
   }
 
   return {
