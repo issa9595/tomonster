@@ -12,23 +12,23 @@ export interface PricingPackage {
 
 export const pricingTable: Record<number, PricingPackage> = {
   10: {
-    productId: 'prod_TJrIjoHwTKwg9c',
+    productId: 'prod_UQiRW0I2n0iHEF',
     price: 0.5
   },
   50: {
-    productId: 'prod_TJrJHiNKtOkEXR',
+    productId: 'prod_UQiRfZSGCSUUlc',
     price: 1
   },
   500: {
-    productId: 'prod_TJrJT9hFwWozod',
+    productId: 'prod_UQiSRG0tDXF3dz',
     price: 2
   },
   1000: {
-    productId: 'prod_TJrKh3jSiA5EQ5',
+    productId: 'prod_UQiSd4lTDdG3QI',
     price: 3
   },
   5000: {
-    productId: 'prod_TJrLUfvqFCZx8l',
+    productId: 'prod_UQiSz51OuSmLHn',
     price: 10
   }
 }
