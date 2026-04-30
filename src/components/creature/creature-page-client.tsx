@@ -188,6 +188,8 @@ export function CreaturePageClient ({ monster }: CreaturePageClientProps): React
               currentAction={currentAction}
               onAction={handleAction}
               monsterId={currentMonster._id}
+              equippedAccessories={currentMonster.equippedAccessories}
+              equippedBackground={currentMonster.equippedBackground}
             />
           </div>
 

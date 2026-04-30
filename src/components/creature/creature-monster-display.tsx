@@ -2,6 +2,8 @@ import { AnimatedMonster, MonsterActions } from '@/components/monsters'
 import type { MonsterTraits, MonsterState } from '@/types/monster'
 import type { MonsterAction } from '@/hooks/monsters'
 import { getStateLabel } from '@/lib/utils'
+import { ACCESSORIES_CATALOG } from '@/config/accessories.config'
+import { BACKGROUNDS_CATALOG } from '@/config/backgrounds.config'
 
 /**
  * Props pour le composant CreatureMonsterDisplay
@@ -19,6 +21,10 @@ interface CreatureMonsterDisplayProps {
   onAction: (action: MonsterAction) => void
   /** ID du monstre */
   monsterId: string
+  /** Accessoires équipés */
+  equippedAccessories?: { hat?: string | null, glasses?: string | null, shoes?: string | null } | null
+  /** Fond équipé */
+  equippedBackground?: string | null
 }
 
 /**
@@ -41,8 +47,14 @@ export function CreatureMonsterDisplay ({
   level,
   currentAction,
   onAction,
-  monsterId
+  monsterId,
+  equippedAccessories,
+  equippedBackground
 }: CreatureMonsterDisplayProps): React.ReactNode {
+  const hat = equippedAccessories?.hat ? ACCESSORIES_CATALOG.find(a => a.id === equippedAccessories.hat) : null
+  const glasses = equippedAccessories?.glasses ? ACCESSORIES_CATALOG.find(a => a.id === equippedAccessories.glasses) : null
+  const shoes = equippedAccessories?.shoes ? ACCESSORIES_CATALOG.find(a => a.id === equippedAccessories.shoes) : null
+  const bg = equippedBackground ? BACKGROUNDS_CATALOG.find(b => b.id === equippedBackground) : null
   // Couleurs selon l'état
   const stateColors: Record<string, { bg: string, text: string, emoji: string }> = {
     happy: { bg: 'from-green-400 to-emerald-500', text: 'Joyeux', emoji: '😊' },
@@ -62,7 +74,26 @@ export function CreatureMonsterDisplay ({
 
       {/* Zone d'affichage du monstre animé - PLUS GRANDE */}
       <div className='relative aspect-square max-w-lg mx-auto mb-8'>
-        <div className='absolute inset-0 bg-gradient-to-br from-yellow-100/50 via-pink-100/50 to-purple-100/50 rounded-3xl animate-pulse-slow' />
+        <div
+          className='absolute inset-0 rounded-3xl animate-pulse-slow'
+          style={{ background: bg ? bg.cssValue : 'linear-gradient(135deg, #fef9c3 0%, #fce7f3 50%, #ede9fe 100%)' }}
+        />
+
+        {/* Accessoires — chapeau et lunettes en haut */}
+        {(hat ?? glasses) && (
+          <div className='absolute top-3 left-3 flex gap-1 text-3xl z-10'>
+            {hat && <span title={hat.name}>{hat.emoji}</span>}
+            {glasses && <span title={glasses.name}>{glasses.emoji}</span>}
+          </div>
+        )}
+
+        {/* Chaussures en bas */}
+        {shoes && (
+          <div className='absolute bottom-3 left-3 text-3xl z-10'>
+            <span title={shoes.name}>{shoes.emoji}</span>
+          </div>
+        )}
+
         <div className='relative p-8'>
           <AnimatedMonster
             state={state}
