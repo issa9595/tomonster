@@ -79,17 +79,23 @@ export function CreatureMonsterDisplay ({
           style={{ background: bg ? bg.cssValue : 'linear-gradient(135deg, #fef9c3 0%, #fce7f3 50%, #ede9fe 100%)' }}
         />
 
-        {/* Accessoires — chapeau et lunettes en haut */}
-        {(hat ?? glasses) && (
-          <div className='absolute top-3 left-3 flex gap-1 text-3xl z-10'>
-            {hat && <span title={hat.name}>{hat.emoji}</span>}
-            {glasses && <span title={glasses.name}>{glasses.emoji}</span>}
+        {/* Chapeau — au-dessus de la tête */}
+        {hat && (
+          <div className='absolute top-6 left-1/2 -translate-x-1/2 text-4xl z-10 pointer-events-none'>
+            <span title={hat.name}>{hat.emoji}</span>
           </div>
         )}
 
-        {/* Chaussures en bas */}
+        {/* Lunettes — sur le visage */}
+        {glasses && (
+          <div className='absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl z-10 pointer-events-none'>
+            <span title={glasses.name}>{glasses.emoji}</span>
+          </div>
+        )}
+
+        {/* Chaussures — en bas du monstre */}
         {shoes && (
-          <div className='absolute bottom-3 left-3 text-3xl z-10'>
+          <div className='absolute bottom-6 left-1/2 -translate-x-1/2 text-3xl z-10 pointer-events-none'>
             <span title={shoes.name}>{shoes.emoji}</span>
           </div>
         )}
