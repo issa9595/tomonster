@@ -75,7 +75,7 @@ export default function AppHeader ({ walletBalance }: AppHeaderProps): React.Rea
                 <div className='absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity' />
                 <Image
                   src='/logo_comp.webp'
-                  alt='Tamagotcho Logo'
+                  alt='ToMonster Logo'
                   width={48}
                   height={48}
                   className='w-12 h-12 relative rounded-full ring-4 ring-white shadow-lg'
@@ -83,7 +83,7 @@ export default function AppHeader ({ walletBalance }: AppHeaderProps): React.Rea
                 />
               </div>
               <span className='text-3xl font-black text-transparent bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text'>
-                Tamagotcho
+                ToMonster
               </span>
             </div>
           </Link>

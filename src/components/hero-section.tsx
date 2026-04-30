@@ -12,7 +12,7 @@ export default function HeroSection (): React.ReactNode {
             et vivez une aventure <span className='text-fuchsia-blue-600'>magique</span>
           </h1>
           <p className='text-xl text-gray-600 mb-8 max-w-3xl mx-auto'>
-            Découvrez l'univers enchanteur de Tamagotcho où des créatures adorables n'attendent que vos soins et votre amour.
+            Découvrez l'univers enchanteur de ToMonster où des créatures adorables n'attendent que vos soins et votre amour.
             Nourrissez, jouez et regardez grandir votre compagnon virtuel dans cette expérience unique !
           </p>
           <div className='flex flex-col sm:flex-row gap-4 justify-center'>

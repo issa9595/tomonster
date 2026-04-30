@@ -42,7 +42,7 @@ export function WelcomeHero ({
 
         {/* Titre principal avec gradient */}
         <h1 className='text-4xl font-black text-transparent bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text leading-tight sm:text-5xl'>
-          Bienvenue dans ton Univers Tamagotcho ! 🎮
+          Bienvenue dans ton Univers ToMonster ! 🎮
         </h1>
 
         {/* Description fun */}

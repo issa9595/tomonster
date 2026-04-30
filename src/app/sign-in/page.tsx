@@ -46,7 +46,7 @@ async function SignInPage (): Promise<React.ReactNode> {
           <div className='text-center mb-8'>
             <div className='text-5xl mb-4'>🎮</div>
             <h1 className='text-3xl font-bold bg-gradient-to-r from-moccaccino-600 to-fuchsia-blue-600 bg-clip-text text-transparent'>
-              Bienvenue chez Tamagotcho !
+              Bienvenue chez ToMonster !
             </h1>
             <p className='text-gray-600 mt-2 text-sm'>
               Vos petits monstres vous attendent 👹✨

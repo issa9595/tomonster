@@ -42,7 +42,7 @@ export async function POST (request: Request): Promise<Response> {
     },
     custom_text: {
       submit: {
-        message: `Achetez des Koins pour nourrir, câliner et personnaliser vos monstres Tamagotcho !`
+        message: `Achetez des Koins pour nourrir, câliner et personnaliser vos monstres ToMonster !`
       }
     },
     locale: 'fr',

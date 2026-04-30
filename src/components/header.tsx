@@ -32,14 +32,14 @@ export default function Header ({ isLoggedIn = false }: HeaderProps): React.Reac
             <div className='flex items-center space-x-2'>
               <Image
                 src='/logo_comp.webp'
-                alt='Tamagotcho Logo'
+                alt='ToMonster Logo'
                 width={40}
                 height={40}
                 className='w-10 h-10'
                 priority
               />
               <span className='text-2xl font-bold text-moccaccino-600'>
-                Tamagotcho
+                ToMonster
               </span>
             </div>
           </div>

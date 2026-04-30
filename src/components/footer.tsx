@@ -51,13 +51,13 @@ export default function Footer (): React.ReactNode {
             <div className='flex items-center space-x-2 mb-4'>
               <Image
                 src='/logo_comp.webp'
-                alt='Tamagotcho Logo'
+                alt='ToMonster Logo'
                 width={32}
                 height={32}
                 className='w-8 h-8'
               />
               <span className='text-2xl font-bold text-moccaccino-400'>
-                Tamagotcho
+                ToMonster
               </span>
             </div>
             <p className='text-gray-400 mb-6 max-w-md'>
@@ -72,7 +72,7 @@ export default function Footer (): React.ReactNode {
         </div>
 
         <div className='border-t border-gray-800 mt-12 pt-8 text-center text-gray-400'>
-          <p>&copy; 2025 Tamagotcho. Tous droits réservés. Créé avec ❤️ pour My Digital School.</p>
+          <p>&copy; 2025 ToMonster. Tous droits réservés. Créé avec ❤️ pour My Digital School.</p>
         </div>
       </div>
     </footer>

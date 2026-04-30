@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   appleWebApp: {
-    title: 'Tamagotcho'
+    title: 'ToMonster'
   },
   manifest: '/manifest.json',
   icons: {
