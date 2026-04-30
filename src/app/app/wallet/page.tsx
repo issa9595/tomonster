@@ -1,13 +1,15 @@
 import { getWallet } from '@/actions/wallet.actions'
 import WalletClient from '@/components/wallet/wallet-client'
 import { getInventory } from '@/actions/accessories.actions'
-import dynamic from 'next/dynamic'
+import lazyImport from 'next/dynamic'
 
-const AccessoriesShopSection = dynamic(
+export const dynamic = 'force-dynamic'
+
+const AccessoriesShopSection = lazyImport(
   () => import('@/components/shop/accessories-shop-section'),
   { loading: () => <div className='animate-pulse bg-gray-100 rounded-3xl h-64' /> }
 )
-const BackgroundsShopSection = dynamic(
+const BackgroundsShopSection = lazyImport(
   () => import('@/components/shop/backgrounds-shop-section'),
   { loading: () => <div className='animate-pulse bg-gray-100 rounded-3xl h-48' /> }
 )
